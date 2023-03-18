@@ -2,11 +2,12 @@ import { TOKEN_KEY } from '@/constants';
 import { defineStore } from 'pinia';
 import { setCookie } from '@/utils/cookies';
 
-import type { ILoginCreds } from '@/services/api/users';
+import type { ILoginCreds, IUser } from '@/services/api/users';
 import { useUserApiService } from '@/services/api/users';
 
 interface IUsersState {
 	loading: boolean;
+	users: IUser[];
 }
 
 const useUsersStore = defineStore({
@@ -14,6 +15,7 @@ const useUsersStore = defineStore({
 
 	state: (): IUsersState => ({
 		loading: false,
+		users: [],
 	}),
 
 	actions: {
@@ -24,6 +26,18 @@ const useUsersStore = defineStore({
 				this.loading = true;
 				const { token, exp } = await userApiService.login(creds);
 				setCookie(TOKEN_KEY, token, exp);
+			} catch (e: unknown) {
+				console.error('login error: ', e);
+			} finally {
+				this.loading = false;
+			}
+		},
+
+		async fetchUsers(): Promise<any> {
+			const userApiService = useUserApiService();
+			try {
+				this.loading = true;
+				this.users = await userApiService.fetchUsers();
 			} catch (e: unknown) {
 				console.error('pageData loading error', e);
 			} finally {
