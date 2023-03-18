@@ -1,4 +1,4 @@
 export enum ROUTES {
-	Admin = '/admin',
-	Login = '/admin/login',
+	Landings = '/landings',
+	Login = '/login',
 }

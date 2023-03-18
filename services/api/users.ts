@@ -20,23 +20,7 @@ export interface ILandingShort {
 
 const httpService = useHttpService();
 
-export const useMainApiService = () => ({
-	getLandings(): Promise<ILandingShort[]> {
-		return httpService.get(`${BASE_URL}/site`);
-	},
-
-	updateLanding(file: File): void {
-		httpService.put(`${BASE_URL}/site`, file);
-	},
-
-	createLanding(file: File): void {
-		httpService.post(`${BASE_URL}/site`, file);
-	},
-
-	deleteLanding(name: string): void {
-		httpService.delete(`${BASE_URL}/site/${name}`);
-	},
-
+export const useUserApiService = () => ({
 	login(creds: ILoginCreds): Promise<ILoginRespose> {
 		return httpService.post(`${BASE_URL}/auth/enter`, creds);
 	},

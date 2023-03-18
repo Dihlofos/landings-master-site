@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useLandingsStore from '@/stores/admin';
+import useLandingsStore from '@/stores/landings';
 import UiButton from '@/components/ui/ui-button.vue';
 
 import IconUpload from '@/components/icons/IconUpload.vue';

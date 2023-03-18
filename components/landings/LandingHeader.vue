@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useLandingsStore from '@/stores/admin';
+import useLandingsStore from '@/stores/landings';
 import { getFileFromComputer } from '@/utils';
 
 import UiButton from '@/components/ui/ui-button.vue';
@@ -16,22 +16,22 @@ function onUpload(): void {
 </script>
 
 <template>
-	<div class="header">
-		<div class="header__wrapper">
-			<h1 class="header__title">Работа с сайтами</h1>
+	<header class="landings-header">
+		<div class="landings-header__wrapper">
+			<h1 class="landings-header__title">Работа с сайтами</h1>
 			<UiButton
-				class="header__create-button"
+				class="landings-header__create-button"
 				@click="onUpload"
 			>
 				<IconUpload />
 				Загрузить новый сайт
 			</UiButton>
 		</div>
-	</div>
+	</header>
 </template>
 
 <style lang="scss">
-.header {
+.landings-header {
 	position: fixed;
 	width: 100%;
 	padding: 2rem;

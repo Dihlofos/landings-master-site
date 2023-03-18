@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	routeRules: {
-		'/admin/**': { ssr: false },
-		'/': { redirect: '/admin' },
+		'**': { ssr: false },
+		'/': { redirect: '/landings' },
 	},
 
 	css: ['@/assets/styles/index.scss'],

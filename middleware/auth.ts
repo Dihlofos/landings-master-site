@@ -11,6 +11,6 @@ export default defineNuxtRouteMiddleware(to => {
 	}
 
 	if (token && to.path === ROUTES.Login) {
-		return navigateTo(ROUTES.Admin);
+		return navigateTo(ROUTES.Landings);
 	}
 });
