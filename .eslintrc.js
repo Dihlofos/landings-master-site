@@ -12,6 +12,7 @@ module.exports = {
 		defineExpose: 'readonly',
 		withDefaults: 'readonly',
 		useRouter: 'readonly',
+		useRoute: 'readonly',
 		useAsyncData: 'readonly',
 		computed: 'readonly',
 		definePageMeta: 'readonly',

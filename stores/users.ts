@@ -1,6 +1,6 @@
 import { TOKEN_KEY } from '@/constants';
 import { defineStore } from 'pinia';
-import { setCookie } from '@/utils/cookies';
+import { setCookie, eraseCookie } from '@/utils/cookies';
 
 import type { ILoginCreds, IUser } from '@/services/api/users';
 import { useUserApiService } from '@/services/api/users';
@@ -43,6 +43,10 @@ const useUsersStore = defineStore({
 			} finally {
 				this.loading = false;
 			}
+		},
+
+		exit() {
+			eraseCookie('token');
 		},
 	},
 });

@@ -9,7 +9,7 @@ import { ROUTES } from '@/constants/routes';
 
 definePageMeta({
 	middleware: 'auth',
-	layout: 'default',
+	layout: 'simple',
 });
 
 const username = ref<string>('');

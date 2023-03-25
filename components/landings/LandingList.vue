@@ -74,7 +74,6 @@ created();
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	max-width: 100rem;
 	margin: 0 auto;
 
 	&__item-id {
