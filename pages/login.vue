@@ -39,7 +39,7 @@ async function login() {
 				method="#"
 				@submit.prevent="login"
 			>
-				<UiTitle class="login__title">Log in, hire up, loser!</UiTitle>
+				<UiTitle class="login__title">Log in</UiTitle>
 				<UiInput
 					v-model="username"
 					class="login__field"
