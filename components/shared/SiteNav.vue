@@ -25,8 +25,6 @@ function onExit() {
 	usersStore.exit();
 	router.push(ROUTES.Login);
 }
-
-console.log('router', routesToShow.value, route.path);
 </script>
 
 <template>
