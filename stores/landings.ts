@@ -16,6 +16,12 @@ const useLandingsStore = defineStore({
 		loading: false,
 	}),
 
+	getters: {
+		landingsOptions(): string[] {
+			return this.landings.map(({ name }) => name);
+		},
+	},
+
 	actions: {
 		// Fetchers.
 		async fetchLandings(): Promise<void> {

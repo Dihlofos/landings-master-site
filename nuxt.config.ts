@@ -4,7 +4,11 @@ export default defineNuxtConfig({
 		'**': { ssr: false },
 		'/': { redirect: '/landings' },
 	},
-
+	router: {
+		options: {
+			linkActiveClass: 'active',
+		},
+	},
 	css: ['@/assets/styles/index.scss'],
 	vite: {
 		css: {

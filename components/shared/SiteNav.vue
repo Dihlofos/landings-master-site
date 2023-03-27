@@ -4,7 +4,6 @@ import { RouteLabel, ROUTES } from '@/constants/routes';
 import useUsersStore from '@/stores/users';
 
 const router = useRouter();
-const route = useRoute();
 
 const usersStore = useUsersStore();
 
@@ -25,8 +24,6 @@ function onExit() {
 	usersStore.exit();
 	router.push(ROUTES.Login);
 }
-
-console.log('router', routesToShow.value, route.path);
 </script>
 
 <template>
@@ -85,6 +82,11 @@ console.log('router', routesToShow.value, route.path);
 		font-size: 1.6rem;
 		line-height: 2.1rem;
 		cursor: pointer;
+
+		&.active {
+			cursor: auto;
+			color: $pink;
+		}
 
 		&:hover {
 			color: $pink;
