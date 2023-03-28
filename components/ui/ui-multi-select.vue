@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// TODO Добавить проверку на то были ли изменения в селекте, и дергать изменение, только при закрытии селекта';
 import { computed, ref, watch } from 'vue';
 import IconArrow from '@/components/icons/IconArrow.vue';
 
@@ -7,9 +8,10 @@ import UiCheckbox from '@/components/ui/ui-checkbox.vue';
 import vClickOutside from '@/directives/v-click-outside';
 
 export interface IUiMultiSelectProps {
-	modelValue: string[];
+	modelValue: Record<string, any>[];
 	name: string;
-	options: string[];
+	options: Record<string, any>[];
+	keyProp?: string;
 	label?: string;
 	class?: string;
 	required?: boolean;
@@ -22,6 +24,7 @@ const props = withDefaults(defineProps<IUiMultiSelectProps>(), {
 	required: false,
 	disabled: false,
 	placeholder: 'Выбрать',
+	keyProp: 'name',
 });
 
 const emit = defineEmits(['update:model-value', 'change']);
@@ -35,20 +38,24 @@ const classes = computed(
 );
 
 const isShowOptions = ref(false);
-const optionsCheck = ref<boolean[]>([]);
+
+const optionsCheck = ref(
+	props.options.map(option => !!props.modelValue.map(value => value[props.keyProp]).includes(option[props.keyProp])),
+);
+
 const labelValue = computed((): string => {
 	if (!props.modelValue.length) {
 		return props.placeholder;
 	}
 
-	if (props.modelValue.length === 1) return props.modelValue[0];
+	if (props.modelValue.length === 1) return props.modelValue[0][props.keyProp];
 
 	return `${props.modelValue.length} выбрано`;
 });
 
-function change(newOption: string[]) {
+function change(newOption: Record<string, any>[]) {
 	emit('update:model-value', newOption);
-	emit('change', newOption);
+	emit('change');
 }
 
 function toggleDropDown() {
@@ -61,8 +68,8 @@ function hideDropDown() {
 	}
 }
 
-function checkOptions(opt: any, index: number) {
-	const res: string[] = [...props.modelValue];
+function checkOptions(opt: Record<string, any>, index: number) {
+	const res: Record<string, any>[] = [...props.modelValue];
 	if (optionsCheck.value[index]) {
 		res.push(opt);
 	} else {
@@ -72,8 +79,11 @@ function checkOptions(opt: any, index: number) {
 }
 
 watch(
-	() => [props.options, props.modelValue],
-	() => (optionsCheck.value = props.options.map(item => !!props.modelValue.includes(item))),
+	() => props.options,
+	() =>
+		(optionsCheck.value = props.options.map(
+			option => !!props.modelValue.map(value => value[props.keyProp]).includes(option[props.keyProp]),
+		)),
 );
 </script>
 
@@ -90,16 +100,19 @@ watch(
 			{{ labelValue }}
 			<IconArrow class="ui-multi-select__icon" />
 		</button>
-		<ul class="ui-multi-select__dropdown">
+		<ul
+			v-show="isShowOptions"
+			class="ui-multi-select__dropdown"
+		>
 			<li
 				v-for="(opt, index) in props.options"
 				class="ui-multi-select__item"
-				:key="opt"
+				:key="opt[props.keyProp]"
 			>
 				<UiCheckbox
 					v-model="optionsCheck[index]"
-					:name="`${opt}_${props.name}_site-option`"
-					:label="opt"
+					:name="`${opt[props.keyProp]}_${props.name}_site-option`"
+					:label="opt[props.keyProp]"
 					@change="checkOptions(opt, index)"
 				/>
 			</li>
@@ -117,7 +130,6 @@ watch(
 	}
 
 	&__dropdown {
-		display: none;
 		position: absolute;
 		top: 2.8rem;
 		left: 0;
@@ -129,8 +141,10 @@ watch(
 		border-left: 2px solid $yellow;
 		z-index: 10;
 
-		.show-dropdown & {
-			display: block;
+		&.show-dropdown {
+			svg {
+				transform: rotate(180deg);
+			}
 		}
 	}
 

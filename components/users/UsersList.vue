@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import useUserStore from '@/stores/users';
 import useLandingsStore from '@/stores/landings';
 import UiButton from '@/components/ui/ui-button.vue';
@@ -19,7 +18,8 @@ function created(): void {
 }
 
 async function onDelete(name: string) {
-	console.log('delete', name);
+	await userStore.deleteUser(name);
+	await userStore.fetchUsers();
 }
 
 async function onChange(user: IUser) {
@@ -27,8 +27,8 @@ async function onChange(user: IUser) {
 	await userStore.fetchUsers();
 }
 
-function onMultiChange(result: string[]) {
-	console.log('result', result);
+async function onMultiChange(name: string) {
+	await userStore.changeUserSites(name);
 }
 
 created();
@@ -53,11 +53,11 @@ created();
 			<div class="users-list__item-sites">
 				<UiMultiSelect
 					v-model="userStore.usersSites[item.username]"
+					key-props="name"
 					:name="`${item.username}-site-multiselect`"
 					:options="landingStore.landingsOptions"
-					@change="onMultiChange($event)"
+					@change="onMultiChange(item.username)"
 				/>
-				{{ item.username }}
 			</div>
 			<div class="users-list__item-role">
 				<UiSelect

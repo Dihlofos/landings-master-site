@@ -35,9 +35,18 @@ export interface IUser {
 	email: string;
 	enabled: true;
 	firstname: string;
+	lastname: string;
 	username: string;
 	role: Roles;
 	sites: ISiteName[];
+}
+
+export interface IUserUpdate {
+	firstname: string;
+	lastname: string;
+	username: string;
+	email: string;
+	password: string;
 }
 
 const httpService = useHttpService();
@@ -55,7 +64,7 @@ export const useUserApiService = () => ({
 		return httpService.get(`${BASE_URL}/user/${nameToFetch}`);
 	},
 
-	createUser(newUser: IUser): Promise<void> {
+	createUser(newUser: IUserUpdate): Promise<void> {
 		return httpService.post(`${BASE_URL}/user`, newUser);
 	},
 
