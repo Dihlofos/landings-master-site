@@ -1,23 +1,22 @@
 <script setup lang="ts">
+import { ROUTES } from '@/constants/routes';
 import UiButton from '@/components/ui/ui-button.vue';
 import IconUpload from '@/components/icons/IconUpload.vue';
-
-function onCreate(): void {
-	console.log('create new user');
-}
 </script>
 
 <template>
 	<header class="users-header">
 		<div class="users-header__wrapper">
 			<h1 class="users-header__title">Работа с пользователями</h1>
-			<UiButton
+			<NuxtLink
 				class="users-header__create-button"
-				@click="onCreate"
+				:href="ROUTES.UsersNew"
 			>
-				<IconUpload />
-				Создать нового пользователя
-			</UiButton>
+				<UiButton class="users-header__create-button">
+					<IconUpload />
+					Создать нового пользователя
+				</UiButton>
+			</NuxtLink>
 		</div>
 	</header>
 </template>
@@ -34,6 +33,7 @@ function onCreate(): void {
 	z-index: 20;
 
 	&__create-button {
+		text-decoration: none;
 		svg {
 			width: 2rem;
 			height: 2rem;

@@ -4,6 +4,7 @@ import { computed } from 'vue';
 export interface IUiInputProps {
 	modelValue: string;
 	name: string;
+	error?: string;
 	label?: string;
 	class?: string;
 	type?: 'text' | 'email' | 'password';
@@ -72,6 +73,7 @@ function onInput(event: Event) {
 				@input="onInput"
 			/>
 		</template>
+		<div class="ui-input__error">{{ props.error }}</div>
 	</div>
 </template>
 

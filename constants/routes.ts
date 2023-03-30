@@ -1,6 +1,7 @@
 export enum ROUTES {
 	Landings = '/landings',
 	Users = '/users',
+	UsersNew = '/users/new',
 	Login = '/login',
 }
 

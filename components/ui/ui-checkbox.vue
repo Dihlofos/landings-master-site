@@ -13,11 +13,9 @@ export interface IUiCheckboxProps {
 
 const props = withDefaults(defineProps<IUiCheckboxProps>(), {
 	class: '',
-	rows: 10,
-	cols: 10,
 });
 
-const emit = defineEmits(['update:model-value']);
+const emit = defineEmits(['update:model-value', 'change']);
 
 const classes = computed(
 	(): Record<string, boolean> => ({
@@ -28,13 +26,13 @@ const classes = computed(
 
 function onCheck(event: Event) {
 	const value = (event.target as HTMLInputElement).checked;
-	console.log(event, value);
 	emit('update:model-value', value);
+	emit('change');
 }
 </script>
 
 <template>
-	<div :class="classes">
+	<div :class="[classes]">
 		<input
 			:model-value="props.modelValue"
 			type="checkbox"
@@ -44,7 +42,10 @@ function onCheck(event: Event) {
 			@change="onCheck"
 		/>
 		<label v-bind:for="props.name">
-			<IconCheck />
+			<div class="check">
+				<IconCheck />
+			</div>
+			{{ props.label }}
 		</label>
 	</div>
 </template>
@@ -52,31 +53,38 @@ function onCheck(event: Event) {
 <style lang="scss">
 .ui-checkbox {
 	label {
-		background-color: $white;
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		width: 2rem;
-		height: 2rem;
 		gap: 1rem;
-		border-radius: 2px;
-		border: none;
-		margin: 0;
 		cursor: pointer;
-		transition: all 0.2s ease-in-out;
 
-		svg {
-			opacity: 0;
-			width: 1.5rem;
-			height: 1.5rem;
-			fill: white;
+		.check {
+			background-color: $white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 2rem;
+			height: 2rem;
+			gap: 1rem;
+			border-radius: 2px;
+			border: 1px solid $darkblue;
+			margin: 0;
+			cursor: pointer;
+			transition: all 0.2s ease-in-out;
+
+			svg {
+				opacity: 0;
+				width: 1.5rem;
+				height: 1.5rem;
+				fill: white;
+			}
 		}
 	}
 
 	input {
 		display: none;
 
-		&:checked + label {
+		&:checked + label .check {
 			background-color: $darkblue;
 			svg {
 				opacity: 1;

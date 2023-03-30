@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 
 import type { ILandingShort } from '@/services/api/landings';
 import { useLandingsApiService } from '@/services/api/landings';
+import { ISiteName } from '@/services/api/users';
 
 interface ILandingState {
 	landings: ILandingShort[];
@@ -15,6 +16,12 @@ const useLandingsStore = defineStore({
 		landings: [],
 		loading: false,
 	}),
+
+	getters: {
+		landingsOptions(): ISiteName[] {
+			return this.landings.map(({ name, id }) => ({ name, id }));
+		},
+	},
 
 	actions: {
 		// Fetchers.
