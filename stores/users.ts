@@ -9,6 +9,7 @@ import { useUserApiService } from '@/services/api/users';
 interface IUsersState {
 	loading: boolean;
 	users: IUser[];
+	activeUser: IUser | null;
 	roles: Roles[];
 	usersSites: Record<string, ISiteName[]>;
 }
@@ -19,6 +20,7 @@ const useUsersStore = defineStore({
 	state: (): IUsersState => ({
 		loading: false,
 		users: [],
+		activeUser: null,
 		roles: [Roles.ADMIN, Roles.MODERATOR, Roles.SITE, Roles.USER],
 		usersSites: {},
 	}),
@@ -51,7 +53,20 @@ const useUsersStore = defineStore({
 			}
 		},
 
-		async updateUser(user: IUser): Promise<void> {
+		async fetchUserByName(name: string): Promise<void> {
+			const userApiService = useUserApiService();
+			try {
+				this.loading = true;
+				this.activeUser = await userApiService.fetchUserByName(name);
+				console.log('this.activeUser', this.activeUser);
+			} catch (e: unknown) {
+				console.error('pageData loading error', e);
+			} finally {
+				this.loading = false;
+			}
+		},
+
+		async updateUser(user: IUserUpdate): Promise<void> {
 			const userApiService = useUserApiService();
 			try {
 				this.loading = true;
@@ -94,6 +109,10 @@ const useUsersStore = defineStore({
 			} finally {
 				this.loading = false;
 			}
+		},
+
+		resetActiveUser() {
+			this.activeUser = null;
 		},
 
 		exit() {

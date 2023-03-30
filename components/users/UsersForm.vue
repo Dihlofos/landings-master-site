@@ -2,9 +2,9 @@
 import UiInput from '@/components/ui/ui-input.vue';
 import UiButton from '@/components/ui/ui-button.vue';
 import IconSpinner from '@/components/icons/IconSpinner.vue';
-import UiTitle from '@/components/ui/ui-title.vue';
+
 import { ref, reactive } from 'vue';
-import { IUserCreate } from '@/services/api/users';
+import { IUserUpdate } from '@/services/api/users';
 
 interface IUserFormProps {
 	username?: string;
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<IUserFormProps>(), {
 
 const emit = defineEmits(['change']);
 
-const user = reactive<IUserCreate>({
+const user = reactive<IUserUpdate>({
 	username: props.username,
 	firstname: props.firstname,
 	lastname: props.lastname,
@@ -53,78 +53,75 @@ function validate() {
 
 <template>
 	<div class="user-form">
-		<div class="container">
-			<form
-				class="user-form__form"
-				method="#"
-				@submit.prevent="changeUser"
+		<form
+			class="user-form__form"
+			method="#"
+			@submit.prevent="changeUser"
+		>
+			<UiInput
+				v-model="user.username"
+				class="user-form__field"
+				name="username"
+				label="User Name"
+				required
+				:disabled="props.isLoading"
+			/>
+			<UiInput
+				v-model="user.firstname"
+				class="user-form__field"
+				name="firstname"
+				label="First Name"
+				:disabled="props.isLoading"
+			/>
+			<UiInput
+				v-model="user.lastname"
+				class="user-form__field"
+				name="lastname"
+				label="Last Name"
+				:disabled="props.isLoading"
+			/>
+			<UiInput
+				v-model="user.email"
+				class="user-form__field"
+				name="email"
+				label="Email"
+				type="email"
+				required
+				:disabled="props.isLoading"
+			/>
+			<UiInput
+				v-model="user.password"
+				class="user-form__field"
+				name="password"
+				label="Password"
+				type="password"
+				required
+				:disabled="props.isLoading"
+			/>
+			<UiInput
+				v-model="passwordSecond"
+				class="user-form__field"
+				name="passwordSecond"
+				label="Password once again"
+				type="password"
+				:disabled="props.isLoading"
+			/>
+			<div
+				v-if="isPasswordsError"
+				class="user-form__password-error"
 			>
-				<UiTitle class="user-form__title">Create new user</UiTitle>
-				<UiInput
-					v-model="user.username"
-					class="user-form__field"
-					name="username"
-					label="User Name"
-					required
-					:disabled="props.isLoading"
-				/>
-				<UiInput
-					v-model="user.firstname"
-					class="user-form__field"
-					name="firstname"
-					label="First Name"
-					:disabled="props.isLoading"
-				/>
-				<UiInput
-					v-model="user.lastname"
-					class="user-form__field"
-					name="lastname"
-					label="Last Name"
-					:disabled="props.isLoading"
-				/>
-				<UiInput
-					v-model="user.email"
-					class="user-form__field"
-					name="email"
-					label="Email"
-					type="email"
-					required
-					:disabled="props.isLoading"
-				/>
-				<UiInput
-					v-model="user.password"
-					class="user-form__field"
-					name="password"
-					label="Password"
-					type="password"
-					required
-					:disabled="props.isLoading"
-				/>
-				<UiInput
-					v-model="passwordSecond"
-					class="user-form__field"
-					name="passwordSecond"
-					label="Password once again"
-					type="password"
-					:disabled="props.isLoading"
-				/>
-				<div
-					v-if="isPasswordsError"
-					class="user-form__password-error"
-				>
-					Пароли не одинаковые, проверьте правильность введенных паролей
-				</div>
-				<UiButton
-					class="user-form__submit"
-					theme="transparent"
-					type="submit"
-					:disabled="props.isLoading"
-				>
-					<IconSpinner v-if="props.isLoading" />
-					<template v-else>Let's go!</template>
-				</UiButton>
-			</form>
-		</div>
+				Пароли не одинаковые, проверьте правильность введенных паролей
+			</div>
+			<UiButton
+				class="user-form__submit"
+				theme="transparent"
+				type="submit"
+				:disabled="props.isLoading"
+			>
+				<IconSpinner v-if="props.isLoading" />
+				<template v-else>Let's go!</template>
+			</UiButton>
+		</form>
 	</div>
 </template>
 
